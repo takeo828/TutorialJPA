@@ -23,7 +23,7 @@ public class CountryController {
         return "country/list";
     }
 
-    @GetMapping(value = { "/detail", "/detail/{code}/"})
+    @GetMapping(value = { "/detail", "/detail/{code}/" })
     public String getCountry(@PathVariable(name = "code", required = false) String code, Model model) {
         Country country = code != null ? service.getCountry(code) : new Country();
         model.addAttribute("country", country);
@@ -31,19 +31,22 @@ public class CountryController {
     }
 
     @PostMapping("/detail")
-    public String postCountry(@RequestParam("code") String code, @RequestParam("name") String name, @RequestParam("population") int population, Model model) {
+    public String postCountry(@RequestParam("code") String code, @RequestParam("name") String name,
+            @RequestParam("population") int population, Model model) {
         service.updateCountry(code, name, population);
+
         return "redirect:/country/list";
     }
 
-    @GetMapping("/delete")
-    public String deleteCountryForm(Model model) {
+    @GetMapping(value = {"/delete",  "/delete/{code}/"})
+    public String deleteCountryForm(@PathVariable(name = "code", required = false) String code, Model model) {
         return "country/delete";
     }
 
     @PostMapping("/delete")
     public String deleteCountry(@RequestParam("code") String code, Model model) {
         service.deleteCountry(code);
+
         return "redirect:/country/list";
     }
 }
